@@ -75,6 +75,8 @@ wire [3:0]	w_ALUControl;
 wire [31:0] w_ALUResult;
 wire [31:0]	w_Mux_Mux;
 wire [31:0] w_RAM_Mux;
+wire			w_JAL;
+wire [4:0]  w_JAL_In;
 
 
 //******************************************************************/
@@ -141,7 +143,8 @@ ControlUnit
 	.MemWrite(w_MemWrite),
 	.ALUSrc(w_ALUSrc),
 	.RegWrite(w_RegWrite),
-	.RegDst(w_RegDst)
+	.RegDst(w_RegDst),
+	.Jal(w_JAL)
 );
 
 Multiplexer2to1
@@ -152,7 +155,7 @@ MuxReg
 	.Data0(w_ROM_Out[20:16]),
 	.Data1(w_ROM_Out[15:11]),
 	//Output
-	.OUT(w_WriteReg)
+	.OUT(w_JAL_In)
 );
 
 RegisterFile
@@ -226,6 +229,7 @@ ALU
 	//Input
 	.A(w_A),
 	.B(w_B),
+	.C(w_PC_ROM),		//PCValue, used for JAL
 	.ALUOperation(w_ALUControl),
 	.shamt(w_ROM_Out[10:6]),
 	//Output
@@ -293,6 +297,17 @@ MuxRAM
 	.Data1(w_RAM_Mux),
 	//Output
 	.OUT(w_WriteData)
+);
+
+Multiplexer2to1JAL
+MuxJAL
+(
+	//Input
+	.Selector(w_JAL),
+	.Data0(w_JAL_In),
+	.Data1(31),
+	//Output
+	.OUT(w_WriteReg)
 );
 
 assign ALUResultOut = w_ALUResult;

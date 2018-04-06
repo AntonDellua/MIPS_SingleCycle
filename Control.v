@@ -25,7 +25,7 @@ module Control
 	output ALUSrc,
 	output RegWrite,
 	output Jump,
-	//output Jal,
+	output Jal,
 	output [5:0]ALUOp
 );
 localparam R_Type = 0;
@@ -63,14 +63,14 @@ always@(OP) begin
 		I_Type_BNE:   ControlValues = 16'b000_000_00_10_000101; //h
 		
 		J_Type_J:     ControlValues = 16'b010_000_00_00_000010; //h
-		//J_Type_JAL:   ControlValues = 16'b110_001_00_00_000011; //h
+		J_Type_JAL:   ControlValues = 16'b110_001_00_00_000011; //h
 		
 		default:
 			ControlValues = 16'b000000000000000;
 		endcase
 end	
 	
-//assign Jal			= ControlValues[15];
+assign Jal			= ControlValues[15];
 assign Jump			= ControlValues[14];	
 assign RegDst 		= ControlValues[13];
 assign ALUSrc 		= ControlValues[12];

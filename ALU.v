@@ -22,6 +22,7 @@ module ALU
 	input [3:0] ALUOperation,
 	input [31:0] A,
 	input [31:0] B,
+	input [31:0] C,	//PCValue, used for JAL
 	input [4:0] shamt,
 	output reg Zero,
 	output reg [31:0]ALUResult
@@ -46,7 +47,7 @@ localparam ORI = 4'b0100;// #
 localparam SW = 4'b1100;//
 		
 //localparam J = 4'b1101;//
-//localparam JAL = 4'b1111;//
+localparam JAL = 4'b1111;//
    
    always @ (A or B or ALUOperation)
      begin
@@ -93,8 +94,8 @@ localparam SW = 4'b1100;//
 		//J_Type
 		  //J: // j
 		   //ALUResult = A; //This is wrong, Jump does not go through ALU
-		  //JAL: //jal
-		  
+		  JAL: //jal
+		   ALUResult = C + 6'h4;
 		  
 		default:
 			ALUResult= 0;
