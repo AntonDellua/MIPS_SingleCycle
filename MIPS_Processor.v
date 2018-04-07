@@ -77,6 +77,8 @@ wire [31:0]	w_Mux_Mux;
 wire [31:0] w_RAM_Mux;
 wire			w_JAL;
 wire [4:0]  w_JAL_In;
+wire [31:0] w_MuxJR;
+wire			w_JR;
 
 
 //******************************************************************/
@@ -91,7 +93,7 @@ ProgramCounter
 	//Input
 	.clk(clk),
 	.reset(reset),
-	.NewPC(w_MuxJump_PC),
+	.NewPC(w_MuxJR),
 	//Output
 	.PCValue(w_PC_ROM)
 );
@@ -245,7 +247,8 @@ ALUControl
 	.ALUFunction(w_ROM_Out[5:0]),
 	.ALUOp(w_ALU_Op),
 	//Output
-	.ALUOperation(w_ALUControl)
+	.ALUOperation(w_ALUControl),
+	.JrFlag(w_JR)
 );
 
 Multiplexer2to1
@@ -308,6 +311,17 @@ MuxJAL
 	.Data1(31),
 	//Output
 	.OUT(w_WriteReg)
+);
+ 
+Multiplexer2to1
+MuxJR
+(
+	//Input
+	.Selector(w_JR),
+	.Data0(w_MuxJump_PC),
+	.Data1(w_ALUResult),
+	//Output
+	.OUT(w_MuxJR)
 );
 
 assign ALUResultOut = w_ALUResult;

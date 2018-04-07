@@ -30,7 +30,7 @@ module ALU
 
 localparam ADD = 4'b0000;//
 localparam AND = 4'b0001;//
-//localparam JR = 4'b0010;//
+localparam JR = 4'b0010;//
 localparam NOR = 4'b0011;
 localparam OR = 4'b0100;//
 localparam SLL = 4'b0101;//
@@ -58,8 +58,8 @@ localparam JAL = 4'b1111;//
 			ALUResult = A + B;
 		  AND: // and | andi
 			ALUResult = A & B;
-		  //JR: //jr
-		   //ALUResult = A;
+		  JR: //jr
+		   ALUResult = A;
 		  NOR: // nor
 			ALUResult = ~(A|B);
 		  OR:  // or  | ori

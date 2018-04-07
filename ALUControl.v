@@ -16,8 +16,8 @@ module ALUControl
 (
 	input [5:0] ALUOp,
 	input [5:0] ALUFunction,
-	output [3:0] ALUOperation
-	//output jrFlag
+	output [3:0] ALUOperation,
+	output JrFlag
 );
 
 
@@ -68,7 +68,7 @@ always@(Selector)begin
 	
 		R_Type_ADD:    ALUControlValues = 5'b0_0000;//
 		R_Type_AND:    ALUControlValues = 5'b0_0001;//
-		//R_Type_JR:		ALUControlValues = 5'b1_0010;// jrFlag Up
+		R_Type_JR:		ALUControlValues = 5'b1_0010;// jrFlag Up
 		R_Type_NOR:    ALUControlValues = 5'b0_0011;//
 		R_Type_OR: 		ALUControlValues = 5'b0_0100;//
 		R_Type_SLL:    ALUControlValues = 5'b0_0101;//
@@ -85,13 +85,13 @@ always@(Selector)begin
 		I_Type_SW:		ALUControlValues = 5'b0_1100;//
 		
 		//J_Type_J:		ALUControlValues = 5'b0_1101;//
-		//J_Type_JAL:		ALUControlValues = 5'b0_1111;// This might change to be equal to JR
+		J_Type_JAL:		ALUControlValues = 5'b0_1111;// This might change to be equal to JR
 
 		default: ALUControlValues = 5'b0_1111;
 	endcase
 end
 
-//assign JrFlag = ALUControlValues[4];
+assign JrFlag = ALUControlValues[4];
 assign ALUOperation = ALUControlValues[3:0];
 
 endmodule
