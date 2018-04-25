@@ -112,6 +112,12 @@ wire [31:0] w_PC_ROM_Out2;
 wire			w_Zero_Out;
 wire [31:0] w_ALUResult_Out;
 wire [5:0]  w_Mux_WriteReg;
+wire			w_MemtoReg_Out3;
+wire			w_RegWrite_Out3;
+wire [31:0] w_RAM_WB;
+wire [31:0] w_ALUResult_WB;
+wire [5:0]  w_WriteReg_Out;
+
 
 
 //******************************************************************/
@@ -199,10 +205,10 @@ RegisterFile
 	//Input
 	.clk(clk),
 	.reset(reset),
-	.RegWrite(w_RegWrite_Out2),
+	.RegWrite(w_RegWrite_Out3),
 	.ReadRegister1(w_Ins_Out[25:21]),
 	.ReadRegister2(w_Ins_Out[20:16]),
-	.WriteRegister(w_WriteReg),
+	.WriteRegister(w_WriteReg_Out),
 	.WriteData(w_WriteData),
 	//Output
 	.ReadData1(w_ReadData1),
@@ -321,15 +327,15 @@ RAM
 	.WriteData(w_Reg_MuxALU),
 	.MemRead(w_MemRead_Out2),
 	//Output
-	.ReadData(w_RAM_Mux)
+	.ReadData(w_RAM_WB)
 );
 
 Multiplexer2to1
 MuxRAM
 (
 	//Input
-	.Selector(w_MemtoReg_Out2),
-	.Data0(w_ALUResult_Out),
+	.Selector(w_MemtoReg_Out3),
+	.Data0(w_ALUResult_WB),
 	.Data1(w_RAM_Mux),
 	//Output
 	.OUT(w_WriteData)
@@ -474,15 +480,32 @@ EX_MEM
 	//Mux
 	.Mux_Out(w_WriteReg)
 );
-/*
+
 MEM_WB
 MEM_WB
 (
-	//Input
+	//***Input
 	.clk(clk),
-	//Output
+	//Control
+	.MemtoReg(w_MemtoReg_Out2),
+	.RegWrite(w_RegWrite_Out2),
+	//RAM
+	.ReadData(w_RAM_WB),
+	//EX_MEM
+	.ALUResult(w_ALUResult_Out),
+	.WriteRegister(w_WriteReg),
+	
+	//***Output
+	//Control
+	.MemtoReg_Out(w_MemtoReg_Out3),
+	.RegWrite_Out(w_RegWrite_Out3),
+	//RAM
+	.ReadData_Out(w_RAM_Mux),
+	//EX_MEM
+	.ALUResult_Out(w_ALUResult_WB),
+	.WriteRegister_Out(w_WriteReg_Out)
 );
-*/
+
 
 assign ALUResultOut = w_ALUResult_Out;
 
