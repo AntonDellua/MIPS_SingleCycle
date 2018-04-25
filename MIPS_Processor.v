@@ -80,6 +80,39 @@ wire [4:0]  w_JAL_In;
 wire [31:0] w_MuxJR;
 wire			w_JR;
 
+//Pipeline
+wire [31:0] w_Ins_Out;
+wire [31:0] w_Add_4;
+wire [5:0]  w_ALU_Op_Out;
+wire			w_Jump_Out;
+wire			w_Branch_Out;
+wire			w_MemRead_Out;
+wire			w_MemtoReg_Out;
+wire			w_MemWrite_Out;
+wire			w_ALUSrc_Out;
+wire			w_RegWrite_Out;
+wire			w_RegDst_Out;
+wire			w_JAL_Out;
+wire [31:0] w_Add_4_Out;
+wire [31:0] w_ReadData1;
+wire [31:0] w_ReadData2;
+wire [31:0] w_Sign_Out;
+wire [4:0]  w_Ex_Ins_A;
+wire [4:0]  w_Ex_Ins_B;
+wire [31:0] w_MuxJump;
+wire [4:0]  w_shamt;
+wire			w_Branch_Out2;
+wire			w_MemRead_Out2;
+wire			w_MemtoReg_Out2;
+wire			w_MemWrite_Out2;
+wire			w_RegWrite_Out2;
+wire [31:0] w_Adder;
+wire [31:0] w_PC_ROM_Out;
+wire [31:0] w_PC_ROM_Out2;
+wire			w_Zero_Out;
+wire [31:0] w_ALUResult_Out;
+wire [5:0]  w_Mux_WriteReg;
+
 
 //******************************************************************/
 //******************************************************************/
@@ -105,7 +138,7 @@ Add_PC
 	.Data0(w_PC_ROM),
 	.Data1(4),
 	//Output
-	.Result(w_Add_ShiftA_Add)
+	.Result(w_Add_4)
 );
 
 ProgramMemory
@@ -125,7 +158,7 @@ ShiftA
 (
 	//Input
 	//.DataInput(w_ROM_Out[25:0]),
-	.DataInput(w_ROM_Out),
+	.DataInput(w_Ins_Out),
 	//.Concatenate(w_Add_ShiftA_Add[31:28]),
 	//Output
 	.DataOutput(w_ShiftA_MuxJump)
@@ -135,7 +168,7 @@ Control
 ControlUnit
 (
 	//Input
-	.OP(w_ROM_Out[31:26]),
+	.OP(w_Ins_Out[31:26]),
 	//Output
 	.ALUOp(w_ALU_Op),
 	.Jump(w_Jump),
@@ -153,9 +186,9 @@ Multiplexer2to1
 MuxReg
 (
 	//Input
-	.Selector(w_RegDst),
-	.Data0(w_ROM_Out[20:16]),
-	.Data1(w_ROM_Out[15:11]),
+	.Selector(w_RegDst_Out),
+	.Data0(w_Ex_Ins_A),	//PIPE Change
+	.Data1(w_Ex_Ins_B),	//PIPE Change
 	//Output
 	.OUT(w_JAL_In)
 );
@@ -166,21 +199,21 @@ RegisterFile
 	//Input
 	.clk(clk),
 	.reset(reset),
-	.RegWrite(w_RegWrite),
-	.ReadRegister1(w_ROM_Out[25:21]),
-	.ReadRegister2(w_ROM_Out[20:16]),
+	.RegWrite(w_RegWrite_Out2),
+	.ReadRegister1(w_Ins_Out[25:21]),
+	.ReadRegister2(w_Ins_Out[20:16]),
 	.WriteRegister(w_WriteReg),
 	.WriteData(w_WriteData),
 	//Output
-	.ReadData1(w_A),
-	.ReadData2(w_Reg_MuxALU)
+	.ReadData1(w_ReadData1),
+	.ReadData2(w_ReadData2)
 );
 
 SignExtend
 SignExtend
 (
 	//Input
-	.DataInput(w_ROM_Out[15:0]),
+	.DataInput(w_Ins_Out[15:0]),
 	//Output
 	.SignExtendOutput(w_Sign)
 );
@@ -189,7 +222,7 @@ ShiftLeft2
 ShiftB
 (
 	//Input
-	.DataInput(w_Sign),
+	.DataInput(w_Sign_Out),
 	//Output
 	.DataOutput(w_ShiftB)
 );
@@ -198,9 +231,9 @@ Multiplexer2to1
 MuxALU
 (
 	//Input
-	.Selector(w_ALUSrc),
-	.Data0(w_Reg_MuxALU),
-	.Data1(w_Sign),
+	.Selector(w_ALUSrc_Out),
+	.Data0(w_ReadData2_Out),
+	.Data1(w_Sign_Out),
 	//Output
 	.OUT(w_B)
 );
@@ -212,15 +245,15 @@ Add
 	.Data0(w_Add_ShiftA_Add),
 	.Data1(w_ShiftB),
 	//Output
-	.Result(w_Add_MuxBranch)
+	.Result(w_Adder)
 );
 
 ANDGate
 AND
 (
 	//Input
-	.A(w_Branch),
-	.B(w_zero),
+	.A(w_Branch_Out2),
+	.B(w_zero_Out),
 	//Output
 	.C(w_PCSrc)
 );
@@ -231,9 +264,9 @@ ALU
 	//Input
 	.A(w_A),
 	.B(w_B),
-	.C(w_PC_ROM),		//PCValue, used for JAL
+	.C(w_PC_ROM_Out2),		//PCValue, used for JAL
 	.ALUOperation(w_ALUControl),
-	.shamt(w_ROM_Out[10:6]),
+	.shamt(w_shamt),	//PIPE Change
 	//Output
 	//.ovf(),
 	.Zero(w_zero),
@@ -244,8 +277,8 @@ ALUControl
 ALUControl
 (
 	//Input
-	.ALUFunction(w_ROM_Out[5:0]),
-	.ALUOp(w_ALU_Op),
+	.ALUFunction(w_Sign_Out[5:0]),	//PIPE Change
+	.ALUOp(w_ALU_Op_Out),
 	//Output
 	.ALUOperation(w_ALUControl),
 	.JrFlag(w_JR)
@@ -255,7 +288,7 @@ Multiplexer2to1
 MuxBranch
 (
 	//Input
-	.Data0(w_Add_ShiftA_Add),
+	.Data0(w_Add_4),
 	.Data1(w_Add_MuxBranch),
 	.Selector(w_PCSrc),
 	//Output
@@ -266,9 +299,9 @@ Multiplexer2to1
 MuxJump
 (
 	//Input
-	.Selector(w_Jump),
+	.Selector(w_Jump_Out),
 	.Data0(w_Mux_Mux),
-	.Data1(w_ShiftA_MuxJump),
+	.Data1(w_MuxJump),
 	//Output
 	.OUT(w_MuxJump_PC)
 );
@@ -283,10 +316,10 @@ RAM
 (
 	//Input
 	.clk(clk),
-	.MemWrite(w_MemWrite),
-	.Address(w_ALUResult),
+	.MemWrite(w_MemWrite_Out2),
+	.Address(w_ALUResult_Out),
 	.WriteData(w_Reg_MuxALU),
-	.MemRead(w_MemRead),
+	.MemRead(w_MemRead_Out2),
 	//Output
 	.ReadData(w_RAM_Mux)
 );
@@ -295,8 +328,8 @@ Multiplexer2to1
 MuxRAM
 (
 	//Input
-	.Selector(w_MemtoReg),
-	.Data0(w_ALUResult),
+	.Selector(w_MemtoReg_Out2),
+	.Data0(w_ALUResult_Out),
 	.Data1(w_RAM_Mux),
 	//Output
 	.OUT(w_WriteData)
@@ -306,11 +339,11 @@ Multiplexer2to1JAL
 MuxJAL
 (
 	//Input
-	.Selector(w_JAL),
+	.Selector(w_JAL_Out),
 	.Data0(w_JAL_In),
 	.Data1(31),
 	//Output
-	.OUT(w_WriteReg)
+	.OUT(w_Mux_WriteReg)
 );
  
 Multiplexer2to1
@@ -319,12 +352,139 @@ MuxJR
 	//Input
 	.Selector(w_JR),
 	.Data0(w_MuxJump_PC),
-	.Data1(w_ALUResult),
+	.Data1(w_ALUResult_Out),
 	//Output
 	.OUT(w_MuxJR)
 );
 
-assign ALUResultOut = w_ALUResult;
+//Pipeline
+
+IF_ID
+IF_ID
+(
+	//Input
+	.clk(clk),
+	.Instruction_In(w_ROM_Out),
+	.PC_4_In(w_Add_4),
+	.PC(w_PC_ROM),
+	//Output
+	.Instruction_Out(w_Ins_Out),
+	.PC_4_Out(w_Add_4_Out),
+	.PC_Out(w_PC_ROM_Out)
+);
+
+ID_EX
+ID_EX
+(
+	//***Input
+	.clk(clk),
+	//Control
+	.RegDst(w_RegDst),
+	.Branch(w_Branch),
+	.MemRead(w_MemRead),
+	.MemtoReg(w_MemtoReg),
+	.MemWrite(w_MemWrite),
+	.ALUSrc(w_ALUSrc),
+	.RegWrite(w_RegWrite),
+	.Jump(w_Jump),
+	.Jal(w_JAL),
+	.ALUOp(w_ALU_Op),
+	//Add 4
+	.Add_4(w_Add_4_Out),
+	//Register File
+	.ReadData1(w_ReadData1),
+	.ReadData2(w_ReadData2),
+	//Sign Extend
+	.SignExtendOutput(w_Sign),
+	//Instruction
+	.ID_Ins_A(w_Ins_Out[20:16]),
+	.ID_Ins_B(w_Ins_Out[15:11]),
+	//JumpAddress
+	.JumpAddress(w_ShiftA_MuxJump),
+	//shamt
+	.shamt(w_Ins_Out[10:6]),
+	//IF_ID
+	.PC(w_PC_ROM_Out),
+	
+	//***Output
+	//Control
+	.RegDst_Out(w_RegDst_Out),
+	.Branch_Out(w_Branch_Out),
+	.MemRead_Out(w_MemRead_Out),
+	.MemtoReg_Out(w_MemtoReg_Out),
+	.MemWrite_Out(w_MemWrite_Out),
+	.ALUSrc_Out(w_ALUSrc_Out),
+	.RegWrite_Out(w_RegWrite_Out),
+	.Jump_Out(w_Jump_Out),
+	.Jal_Out(w_JAL_Out),
+	.ALUOp_Out(w_ALU_Op_Out),
+	//Add 4
+	.Add_4_Out(w_Add_ShiftA_Add),
+	//Register File
+	.ReadData1_Out(w_A),
+	.ReadData2_Out(w_ReadData2_Out),
+	//Sign Extend
+	.SignExtendOutput_Out(w_Sign_Out),
+	//Instruction
+	.EX_Ins_A(w_Ex_Ins_A),
+	.EX_Ins_B(w_Ex_Ins_B),
+	//JumpAddress
+	.JumpAddress_Out(w_MuxJump),
+	//shamt
+	.shamt_Out(w_shamt),
+	//IF_ID
+	.PC_Out(w_PC_ROM_Out2)
+);
+
+EX_MEM
+EX_MEM
+(
+	//***Input
+	.clk(clk),
+	//Control
+	.Branch(w_Branch_Out),
+	.MemRead(w_MemRead_Out),
+	.MemtoReg(w_MemtoReg_Out),
+	.MemWrite(w_MemWrite_Out),
+	.RegWrite(w_RegWrite_Out),
+	//Add
+	.Add(w_Adder),
+	//ALU
+	.Zero(w_zero),
+	.ALUResult(w_ALUResult),
+	//ID_EX
+	.ReadData2(w_ReadData2_Out),
+	//Mux
+	.Mux(w_Mux_WriteReg),
+	
+	//***Output
+	//Control
+	.Branch_Out(w_Branch_Out2),
+	.MemRead_Out(w_MemRead_Out2),
+	.MemtoReg_Out(w_MemtoReg_Out2),
+	.MemWrite_Out(w_MemWrite_Out2),
+	.RegWrite_Out(w_RegWrite_Out2),
+	//Add
+	.Add_Out(w_Add_MuxBranch),
+	//ALU
+	.Zero_Out(w_Zero_Out),
+	.ALUResult_Out(w_ALUResult_Out),
+	//ID_EX
+	.ReadData2_Out(w_Reg_MuxALU),
+	//Mux
+	.Mux_Out(w_WriteReg)
+);
+/*
+MEM_WB
+MEM_WB
+(
+	//Input
+	.clk(clk),
+	//Output
+);
+*/
+
+assign ALUResultOut = w_ALUResult_Out;
 
 endmodule
 
