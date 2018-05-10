@@ -97,7 +97,7 @@ wire [31:0] w_Add_4_Out;
 wire [31:0] w_ReadData1;
 wire [31:0] w_ReadData2;
 wire [31:0] w_Sign_Out;
-wire [4:0]  w_Ex_Ins_A;
+wire [4:0]  w_Ex_Ins_A; //tu 
 wire [4:0]  w_Ex_Ins_B;
 wire [31:0] w_MuxJump;
 wire [4:0]  w_shamt;
@@ -189,6 +189,9 @@ ControlUnit
 );
 
 Multiplexer2to1
+#(
+	.NBits(5)
+)
 MuxReg
 (
 	//Input
@@ -259,7 +262,7 @@ AND
 (
 	//Input
 	.A(w_Branch_Out2),
-	.B(w_zero_Out),
+	.B(w_Zero_Out),
 	//Output
 	.C(w_PCSrc)
 );
