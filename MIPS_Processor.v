@@ -97,11 +97,7 @@ wire [31:0] w_Add_4_Out;
 wire [31:0] w_ReadData1;
 wire [31:0] w_ReadData2;
 wire [31:0] w_Sign_Out;
-<<<<<<< HEAD
-wire [4:0]  w_Ex_Ins_A; //tu 
-=======
 wire [4:0]  w_Ex_Ins_A;
->>>>>>> alondra
 wire [4:0]  w_Ex_Ins_B;
 wire [31:0] w_MuxJump;
 wire [4:0]  w_shamt;
@@ -121,10 +117,7 @@ wire			w_RegWrite_Out3;
 wire [31:0] w_RAM_WB;
 wire [31:0] w_ALUResult_WB;
 wire [5:0]  w_WriteReg_Out;
-<<<<<<< HEAD
-=======
 wire [31:0] w_ReadData2_Out;
->>>>>>> alondra
 
 
 
@@ -197,12 +190,6 @@ ControlUnit
 );
 
 Multiplexer2to1
-<<<<<<< HEAD
-#(
-	.NBits(5)
-)
-=======
->>>>>>> alondra
 MuxReg
 (
 	//Input
@@ -273,11 +260,7 @@ AND
 (
 	//Input
 	.A(w_Branch_Out2),
-<<<<<<< HEAD
-	.B(w_Zero_Out),
-=======
 	.B(w_zero_Out),
->>>>>>> alondra
 	//Output
 	.C(w_PCSrc)
 );
@@ -334,10 +317,6 @@ DataMemory
 #(	
    .DATA_WIDTH(DATA_WIDTH),
 	.MEMORY_DEPTH(MEMORY_DEPTH)
-<<<<<<< HEAD
-
-=======
->>>>>>> alondra
 )
 RAM
 (
@@ -391,12 +370,9 @@ IF_ID
 (
 	//Input
 	.clk(clk),
-<<<<<<< HEAD
-=======
 	.reset(reset),
 	.enable(1), //enable NOT
 	
->>>>>>> alondra
 	.Instruction_In(w_ROM_Out),
 	.PC_4_In(w_Add_4),
 	.PC(w_PC_ROM),
@@ -411,12 +387,9 @@ ID_EX
 (
 	//***Input
 	.clk(clk),
-<<<<<<< HEAD
-=======
 	.reset(reset),
 	.enable(1), //enable NOT
 	
->>>>>>> alondra
 	//Control
 	.RegDst(w_RegDst),
 	.Branch(w_Branch),
@@ -480,11 +453,8 @@ EX_MEM
 (
 	//***Input
 	.clk(clk),
-<<<<<<< HEAD
-=======
 	.reset(reset),
 	.enable(1), //enable NOT
->>>>>>> alondra
 	//Control
 	.Branch(w_Branch_Out),
 	.MemRead(w_MemRead_Out),
@@ -524,11 +494,8 @@ MEM_WB
 (
 	//***Input
 	.clk(clk),
-<<<<<<< HEAD
-=======
 	.reset(reset),
 	.enable(1), //enable NOT
->>>>>>> alondra
 	//Control
 	.MemtoReg(w_MemtoReg_Out2),
 	.RegWrite(w_RegWrite_Out2),
@@ -553,4 +520,3 @@ MEM_WB
 assign ALUResultOut = w_ALUResult_Out;
 
 endmodule
-

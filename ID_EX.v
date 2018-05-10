@@ -1,11 +1,8 @@
 module ID_EX
 (
 	input clk,
-<<<<<<< HEAD
-=======
 	input reset,
 	input enable,
->>>>>>> alondra
 	//Control
 	input RegDst,
 	input Branch,
@@ -54,40 +51,6 @@ module ID_EX
 	output reg [31:0]PC_Out
 );
 
-<<<<<<< HEAD
-always@(negedge clk)
-	begin
-		//Control
-		RegDst_Out = RegDst;
-		Branch_Out = Branch;
-		MemRead_Out = MemRead;
-		MemtoReg_Out = MemtoReg;
-		MemWrite_Out = MemWrite;
-		ALUSrc_Out = ALUSrc;
-		RegWrite_Out = RegWrite;
-		Jump_Out = Jump;
-		Jal_Out = Jal;
-		ALUOp_Out = ALUOp;
-		//Add 4
-		Add_4_Out = Add_4;
-		//Register File
-		ReadData1_Out = ReadData1;
-		ReadData2_Out = ReadData2;
-		//Sign Extend
-		SignExtendOutput_Out = SignExtendOutput;
-		//Instruction
-		EX_Ins_A = ID_Ins_A;
-		EX_Ins_B = ID_Ins_B;
-		//JumpAddress
-		JumpAddress_Out = JumpAddress;
-		//shamt
-		shamt_Out = shamt;
-		//PC
-		PC_Out = PC;
-	end
-	
-endmodule
-=======
 always@(negedge reset or posedge clk) begin
 	if(reset==0)
 		begin
@@ -153,5 +116,3 @@ always@(negedge reset or posedge clk) begin
 end
 
 endmodule
-
->>>>>>> alondra
