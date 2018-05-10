@@ -1,10 +1,6 @@
 module EX_MEM
 (
 	input clk,
-<<<<<<< HEAD
-	//TODO
-);
-=======
 	//Control
 	input Branch,
 	input MemRead,
@@ -47,4 +43,3 @@ always@(negedge clk)
 	end
 	
 endmodule
->>>>>>> alondra

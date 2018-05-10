@@ -1,6 +1,11 @@
 module MEM_WB
 (
 	input clk,
+<<<<<<< HEAD
+=======
+	input reset,
+	input enable,
+>>>>>>> alondra
 	//Control
 	input MemtoReg,
 	input RegWrite,
@@ -16,6 +21,7 @@ module MEM_WB
 	output reg [4:0]WriteRegister_Out
 );
 
+<<<<<<< HEAD
 always@(negedge clk)
 	begin
 		MemtoReg_Out = MemtoReg;
@@ -26,3 +32,26 @@ always@(negedge clk)
 	end
 	
 endmodule
+=======
+always@(negedge reset or posedge clk) begin
+	if(reset==0)
+	begin
+			MemtoReg_Out <= 0;
+		RegWrite_Out <= 0;
+		ReadData_Out <= 0;
+		ALUResult_Out <= 0;
+		WriteRegister_Out <= 0;
+		end
+	else	
+		if(enable==1)
+		begin
+			MemtoReg_Out <= MemtoReg;
+		RegWrite_Out <= RegWrite;
+		ReadData_Out <= ReadData;
+		ALUResult_Out <= ALUResult;
+		WriteRegister_Out <= WriteRegister;
+		end
+end
+
+endmodule
+>>>>>>> alondra

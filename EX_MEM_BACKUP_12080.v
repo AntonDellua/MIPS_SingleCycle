@@ -2,9 +2,10 @@ module EX_MEM
 (
 	input clk,
 <<<<<<< HEAD
-	//TODO
-);
 =======
+	input reset,
+	input enable,
+>>>>>>> alondra
 	//Control
 	input Branch,
 	input MemRead,
@@ -31,6 +32,7 @@ module EX_MEM
 	input [4:0]Mux,
 	output reg [4:0]Mux_Out
 );
+<<<<<<< HEAD
 
 always@(negedge clk)
 	begin
@@ -46,5 +48,37 @@ always@(negedge clk)
 		Mux_Out = Mux;
 	end
 	
+endmodule
+=======
+always@(negedge reset or posedge clk) begin
+	if(reset==0)
+		begin
+		Branch_Out <= 0;
+		MemRead_Out <= 0;
+		MemtoReg_Out <= 0;
+		MemWrite_Out <= 0;
+		RegWrite_Out <= 0;
+		Add_Out <= 0;
+		Zero_Out <= 0;
+		ALUResult_Out <= 0;
+		ReadData2_Out <= 0;
+		Mux_Out <= 0;
+		end
+		else
+	if(enable==1)
+	begin
+			Branch_Out <= Branch;
+		MemRead_Out <= MemRead;
+		MemtoReg_Out <= MemtoReg;
+		MemWrite_Out <= MemWrite;
+		RegWrite_Out <= RegWrite;
+		Add_Out <= Add;
+		Zero_Out <= Zero;
+		ALUResult_Out <= ALUResult;
+		ReadData2_Out <= ReadData2;
+		Mux_Out <= Mux; 
+		end
+end
+
 endmodule
 >>>>>>> alondra

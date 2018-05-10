@@ -65,6 +65,7 @@ add wave -noupdate /MIPS_Processor_TB/DUV/RegisterFile/WriteData
 add wave -noupdate /MIPS_Processor_TB/DUV/RegisterFile/RegWrite
 add wave -noupdate -radix hexadecimal /MIPS_Processor_TB/DUV/RegisterFile/ReadData1
 add wave -noupdate -radix hexadecimal /MIPS_Processor_TB/DUV/RegisterFile/ReadData2
+<<<<<<< HEAD
 add wave -noupdate -divider IF_ID
 add wave -noupdate /MIPS_Processor_TB/DUV/IF_ID/clk
 add wave -noupdate /MIPS_Processor_TB/DUV/IF_ID/reset
@@ -155,6 +156,8 @@ add wave -noupdate /MIPS_Processor_TB/DUV/MEM_WB/ALUResult
 add wave -noupdate /MIPS_Processor_TB/DUV/MEM_WB/WriteRegister
 add wave -noupdate /MIPS_Processor_TB/DUV/MEM_WB/ALUResult_Out
 add wave -noupdate /MIPS_Processor_TB/DUV/MEM_WB/WriteRegister_Out
+=======
+>>>>>>> alondra
 add wave -noupdate -divider Registers
 add wave -noupdate -label ra -radix hexadecimal /MIPS_Processor_TB/DUV/RegisterFile/Register_ra/DataOutput
 add wave -noupdate -label t0 -radix unsigned /MIPS_Processor_TB/DUV/RegisterFile/Register_t0/DataOutput
@@ -170,10 +173,17 @@ add wave -noupdate -label s5 /MIPS_Processor_TB/DUV/RegisterFile/Register_s5/Dat
 add wave -noupdate -label s6 /MIPS_Processor_TB/DUV/RegisterFile/Register_s6/DataOutput
 add wave -noupdate -label s7 /MIPS_Processor_TB/DUV/RegisterFile/Register_s7/DataOutput
 TreeUpdate [SetDefaultTree]
+<<<<<<< HEAD
 WaveRestoreCursors {{Cursor 1} {2 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 121
+=======
+WaveRestoreCursors {{Cursor 1} {31 ps} 0}
+quietly wave cursor active 1
+configure wave -namecolwidth 150
+configure wave -valuecolwidth 198
+>>>>>>> alondra
 configure wave -justifyvalue left
 configure wave -signalnamewidth 1
 configure wave -snapdistance 10
@@ -186,4 +196,8 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
+<<<<<<< HEAD
 WaveRestoreZoom {0 ps} {37 ps}
+=======
+WaveRestoreZoom {13 ps} {45 ps}
+>>>>>>> alondra
