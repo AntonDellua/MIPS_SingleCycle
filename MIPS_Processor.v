@@ -411,14 +411,33 @@ HazardDetect
 HazardDU
 (
 	//Input
-		.IDEXMemRead(), //sale del idex del pipe
-		.Rt(w_Ex_Ins_A), 			 //
-	   .Rd(w_Ins_Out),			//sale de instruccion del pipe
+		.IDEXMemRead(),
+		.IDEXRt(),
+		.IFIDRs(),
+		.IFIDRt(),			//sale de instruccion del pipe
+		
 	//Output
 		.HazardMux(w_HazardMux), 
 		.IFIDWrite(w_IFIDWrite), //**modificar para la entrada del pipe
 		.PCWrite(w_stall)  //va a controlar en pc
  
+);
+//////////////////ADD THE FORWARD UNIT////////////////
+ForwardUnit
+Forward
+(
+		//input
+		 .EXMEMRd(),
+		 .MEMWBRd(),
+		 .IDEXRt(),
+		 .IDEXRs(),
+		 .MEMWB_RW(), 
+		 .EXMEM_RW,
+		 
+		 //Output
+		.ForwardA(), 
+		.ForwardB() 
+		
 );
 
 ///////////////////Pipeline//////////////////////////////////
