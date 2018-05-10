@@ -13,9 +13,9 @@ module MEM_WB
 	output reg [31:0]ReadData_Out,
 	//EX_MEM
 	input [31:0]ALUResult,
-	input [31:0]WriteRegister,
+	input [4:0]WriteRegister,
 	output reg [31:0]ALUResult_Out,
-	output reg [31:0]WriteRegister_Out
+	output reg [4:0]WriteRegister_Out
 );
 
 always@(negedge reset or posedge clk) begin

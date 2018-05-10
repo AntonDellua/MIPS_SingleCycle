@@ -117,6 +117,7 @@ wire			w_RegWrite_Out3;
 wire [31:0] w_RAM_WB;
 wire [31:0] w_ALUResult_WB;
 wire [5:0]  w_WriteReg_Out;
+wire [31:0] w_ReadData2_Out;
 
 
 
@@ -316,7 +317,6 @@ DataMemory
 #(	
    .DATA_WIDTH(DATA_WIDTH),
 	.MEMORY_DEPTH(MEMORY_DEPTH)
-
 )
 RAM
 (
@@ -371,7 +371,7 @@ IF_ID
 	//Input
 	.clk(clk),
 	.reset(reset),
-	.enable(), //enable NOT
+	.enable(1), //enable NOT
 	
 	.Instruction_In(w_ROM_Out),
 	.PC_4_In(w_Add_4),
@@ -388,7 +388,7 @@ ID_EX
 	//***Input
 	.clk(clk),
 	.reset(reset),
-	.enable(), //enable NOT
+	.enable(1), //enable NOT
 	
 	//Control
 	.RegDst(w_RegDst),
@@ -454,7 +454,7 @@ EX_MEM
 	//***Input
 	.clk(clk),
 	.reset(reset),
-	.enable(), //enable NOT
+	.enable(1), //enable NOT
 	//Control
 	.Branch(w_Branch_Out),
 	.MemRead(w_MemRead_Out),
@@ -495,7 +495,7 @@ MEM_WB
 	//***Input
 	.clk(clk),
 	.reset(reset),
-	.enable(), //enable NOT
+	.enable(1), //enable NOT
 	//Control
 	.MemtoReg(w_MemtoReg_Out2),
 	.RegWrite(w_RegWrite_Out2),
