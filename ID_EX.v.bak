@@ -1,0 +1,17 @@
+module ID_EX
+(
+	input clk,
+	//TODO
+);
+
+always@(negedge clk)
+	begin
+	
+	end
+	
+always@(negedge clk)
+	begin
+	
+	end
+	
+endmodule

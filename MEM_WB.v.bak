@@ -1,0 +1,16 @@
+module MEM_WB
+(
+
+);
+
+always@(negedge clk)
+	begin
+	
+	end
+	
+always@(negedge clk)
+	begin
+	
+	end
+	
+endmodule
