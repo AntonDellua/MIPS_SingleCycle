@@ -97,7 +97,7 @@ wire [31:0] w_Add_4_Out;
 wire [31:0] w_ReadData1;
 wire [31:0] w_ReadData2;
 wire [31:0] w_Sign_Out;
-wire [4:0]  w_Ex_Ins_A; //tu 
+wire [4:0]  w_Ex_Ins_A;
 wire [4:0]  w_Ex_Ins_B;
 wire [31:0] w_MuxJump;
 wire [4:0]  w_shamt;
@@ -117,7 +117,10 @@ wire			w_RegWrite_Out3;
 wire [31:0] w_RAM_WB;
 wire [31:0] w_ALUResult_WB;
 wire [5:0]  w_WriteReg_Out;
-
+wire 			W_ForwardA;			//se agrega el wire del forwardingA
+wire        W_ForwardB;      //se agrega el wire del forwardB para forwarding selector
+wire        w_ToMuxALU;			// se agrega el wire del mux3to1 que va a mux alu
+wire        w_HazardMux;
 
 
 //******************************************************************/
@@ -181,7 +184,7 @@ ControlUnit
 	.Branch(w_Branch),
 	.MemRead(w_MemRead),
 	.MemtoReg(w_MemtoReg),
-	.MemWrite(w_MemWrite),
+	.MemWrite(w_MemWrite), 
 	.ALUSrc(w_ALUSrc),
 	.RegWrite(w_RegWrite),
 	.RegDst(w_RegDst),
@@ -189,9 +192,6 @@ ControlUnit
 );
 
 Multiplexer2to1
-#(
-	.NBits(5)
-)
 MuxReg
 (
 	//Input
@@ -201,6 +201,8 @@ MuxReg
 	//Output
 	.OUT(w_JAL_In)
 );
+
+
 
 RegisterFile
 RegisterFile
@@ -241,8 +243,8 @@ MuxALU
 (
 	//Input
 	.Selector(w_ALUSrc_Out),
-	.Data0(w_ReadData2_Out),
-	.Data1(w_Sign_Out),
+	.Data0(w_Sign_Out),			//
+	.Data1(w_ToMuxALU),  		//
 	//Output
 	.OUT(w_B)
 );
@@ -262,7 +264,7 @@ AND
 (
 	//Input
 	.A(w_Branch_Out2),
-	.B(w_Zero_Out),
+	.B(w_zero_Out),
 	//Output
 	.C(w_PCSrc)
 );
@@ -344,6 +346,20 @@ MuxRAM
 	.OUT(w_WriteData)
 );
 
+// se agrega un MUX 3 a 1 para el mux de alu o ram
+Mux3to1
+Mux_ALUoRAM
+(
+		//input
+		.Selector(W_ForwardB),
+		.Data0(w_ReadData2_Out), //entra del pipe id/ex
+		.Data1(w_WriteData),		//entra de la salida de muxRAM
+		.Data2(w_ALUResult_Out), //entra de la salida del pipe de la salida alu 
+		//output
+		.OUT(w_ToMuxALU)         //va a MuxALU
+		
+);
+ 
 Multiplexer2to1JAL
 MuxJAL
 (
@@ -366,7 +382,46 @@ MuxJR
 	.OUT(w_MuxJR)
 );
 
-//Pipeline
+// se agrega un MUX 3 a 1 para el mux hacia alu de ´pipe
+Mux3to1
+Mux_toALU
+(
+		//input
+		.Selector(W_ForwardA),
+		.Data0(w_ReadData1_Out), //entra del pipe id/ex
+		.Data1(w_WriteData),		//entra de la salida de muxRAM
+		.Data2(w_ALUResult_Out), //entra de la salida del pipe de la salida alu 
+		//output
+		.OUT(w_A)         //va a ALU directo
+		
+);
+Multiplexer2to1
+MuxFromControl
+(
+	//Input
+	.Selector(w_HazardMux),    //salida de hazard DU
+	.Data0(),		// salida de control 
+	.Data1(1'b0),
+	//Output
+	.OUT()       //salida que va a pipeline de ID/EX
+);
+ 
+//////////////////ADD THE HAZARD DETECTION UNIT////////////////
+HazardDetect
+HazardDU
+(
+	//Input
+		.IDEXMemRead(), //sale del idex del pipe
+		.Rt(w_Ex_Ins_A), 			 //
+	   .Rd(w_Ins_Out),			//sale de instruccion del pipe
+	//Output
+		.HazardMux(w_HazardMux), 
+		.IFIDWrite(w_IFIDWrite), //**modificar para la entrada del pipe
+		.PCWrite(w_stall)  //va a controlar en pc
+ 
+);
+
+///////////////////Pipeline//////////////////////////////////
 
 IF_ID
 IF_ID
@@ -508,6 +563,9 @@ MEM_WB
 	.ALUResult_Out(w_ALUResult_WB),
 	.WriteRegister_Out(w_WriteReg_Out)
 );
+
+
+
 
 
 assign ALUResultOut = w_ALUResult_Out;
