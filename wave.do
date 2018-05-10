@@ -65,6 +65,96 @@ add wave -noupdate /MIPS_Processor_TB/DUV/RegisterFile/WriteData
 add wave -noupdate /MIPS_Processor_TB/DUV/RegisterFile/RegWrite
 add wave -noupdate -radix hexadecimal /MIPS_Processor_TB/DUV/RegisterFile/ReadData1
 add wave -noupdate -radix hexadecimal /MIPS_Processor_TB/DUV/RegisterFile/ReadData2
+add wave -noupdate -divider IF_ID
+add wave -noupdate /MIPS_Processor_TB/DUV/IF_ID/clk
+add wave -noupdate /MIPS_Processor_TB/DUV/IF_ID/reset
+add wave -noupdate /MIPS_Processor_TB/DUV/IF_ID/enable
+add wave -noupdate /MIPS_Processor_TB/DUV/IF_ID/Instruction_In
+add wave -noupdate /MIPS_Processor_TB/DUV/IF_ID/PC_4_In
+add wave -noupdate /MIPS_Processor_TB/DUV/IF_ID/PC
+add wave -noupdate /MIPS_Processor_TB/DUV/IF_ID/Instruction_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/IF_ID/PC_4_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/IF_ID/PC_Out
+add wave -noupdate -divider ID_EX
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/clk
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/reset
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/enable
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/RegDst
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/Branch
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/MemRead
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/MemtoReg
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/MemWrite
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/ALUSrc
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/RegWrite
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/Jump
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/Jal
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/ALUOp
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/RegDst_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/Branch_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/MemRead_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/MemtoReg_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/MemWrite_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/ALUSrc_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/RegWrite_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/Jump_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/Jal_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/ALUOp_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/Add_4
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/Add_4_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/ReadData1
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/ReadData2
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/ReadData1_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/ReadData2_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/SignExtendOutput
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/SignExtendOutput_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/ID_Ins_A
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/ID_Ins_B
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/EX_Ins_A
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/EX_Ins_B
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/JumpAddress
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/JumpAddress_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/shamt
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/shamt_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/PC
+add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/PC_Out
+add wave -noupdate -divider EX_MEM
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/clk
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/reset
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/enable
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/Branch
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/MemRead
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/MemtoReg
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/MemWrite
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/RegWrite
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/Branch_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/MemRead_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/MemtoReg_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/MemWrite_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/RegWrite_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/Add
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/Add_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/Zero
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/ALUResult
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/Zero_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/ALUResult_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/ReadData2
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/ReadData2_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/Mux
+add wave -noupdate /MIPS_Processor_TB/DUV/EX_MEM/Mux_Out
+add wave -noupdate -divider MEM_WB
+add wave -noupdate /MIPS_Processor_TB/DUV/MEM_WB/clk
+add wave -noupdate /MIPS_Processor_TB/DUV/MEM_WB/reset
+add wave -noupdate /MIPS_Processor_TB/DUV/MEM_WB/enable
+add wave -noupdate /MIPS_Processor_TB/DUV/MEM_WB/MemtoReg
+add wave -noupdate /MIPS_Processor_TB/DUV/MEM_WB/RegWrite
+add wave -noupdate /MIPS_Processor_TB/DUV/MEM_WB/MemtoReg_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/MEM_WB/RegWrite_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/MEM_WB/ReadData
+add wave -noupdate /MIPS_Processor_TB/DUV/MEM_WB/ReadData_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/MEM_WB/ALUResult
+add wave -noupdate /MIPS_Processor_TB/DUV/MEM_WB/WriteRegister
+add wave -noupdate /MIPS_Processor_TB/DUV/MEM_WB/ALUResult_Out
+add wave -noupdate /MIPS_Processor_TB/DUV/MEM_WB/WriteRegister_Out
 add wave -noupdate -divider Registers
 add wave -noupdate -label ra -radix hexadecimal /MIPS_Processor_TB/DUV/RegisterFile/Register_ra/DataOutput
 add wave -noupdate -label t0 -radix unsigned /MIPS_Processor_TB/DUV/RegisterFile/Register_t0/DataOutput
@@ -80,10 +170,10 @@ add wave -noupdate -label s5 /MIPS_Processor_TB/DUV/RegisterFile/Register_s5/Dat
 add wave -noupdate -label s6 /MIPS_Processor_TB/DUV/RegisterFile/Register_s6/DataOutput
 add wave -noupdate -label s7 /MIPS_Processor_TB/DUV/RegisterFile/Register_s7/DataOutput
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {31 ps} 0}
+WaveRestoreCursors {{Cursor 1} {2 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
-configure wave -valuecolwidth 198
+configure wave -valuecolwidth 121
 configure wave -justifyvalue left
 configure wave -signalnamewidth 1
 configure wave -snapdistance 10
@@ -96,4 +186,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {13 ps} {45 ps}
+WaveRestoreZoom {0 ps} {37 ps}
