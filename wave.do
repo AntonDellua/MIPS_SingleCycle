@@ -6,14 +6,14 @@ add wave -noupdate /MIPS_Processor_TB/PortIn
 add wave -noupdate -radix hexadecimal /MIPS_Processor_TB/ALUResultOut
 add wave -noupdate /MIPS_Processor_TB/PortOut
 add wave -noupdate -divider ALU
-add wave -noupdate /MIPS_Processor_TB/DUV/ALU/ALUOperation
+add wave -noupdate -radix hexadecimal /MIPS_Processor_TB/DUV/ALU/ALUOperation
 add wave -noupdate /MIPS_Processor_TB/DUV/ALU/A
 add wave -noupdate -radix unsigned /MIPS_Processor_TB/DUV/ALU/B
 add wave -noupdate -radix hexadecimal /MIPS_Processor_TB/DUV/ALU/C
 add wave -noupdate /MIPS_Processor_TB/DUV/ALU/Zero
 add wave -noupdate -radix hexadecimal /MIPS_Processor_TB/DUV/ALU/ALUResult
 add wave -noupdate -divider ALUControl
-add wave -noupdate -radix hexadecimal /MIPS_Processor_TB/DUV/ALUControl/ALUOp
+add wave -noupdate -radix binary /MIPS_Processor_TB/DUV/ALUControl/ALUOp
 add wave -noupdate /MIPS_Processor_TB/DUV/ALUControl/ALUFunction
 add wave -noupdate /MIPS_Processor_TB/DUV/ALUControl/ALUOperation
 add wave -noupdate /MIPS_Processor_TB/DUV/ALUControl/ALUControlValues
@@ -65,7 +65,6 @@ add wave -noupdate /MIPS_Processor_TB/DUV/RegisterFile/WriteData
 add wave -noupdate /MIPS_Processor_TB/DUV/RegisterFile/RegWrite
 add wave -noupdate -radix hexadecimal /MIPS_Processor_TB/DUV/RegisterFile/ReadData1
 add wave -noupdate -radix hexadecimal /MIPS_Processor_TB/DUV/RegisterFile/ReadData2
-<<<<<<< HEAD
 add wave -noupdate -divider IF_ID
 add wave -noupdate /MIPS_Processor_TB/DUV/IF_ID/clk
 add wave -noupdate /MIPS_Processor_TB/DUV/IF_ID/reset
@@ -156,15 +155,13 @@ add wave -noupdate /MIPS_Processor_TB/DUV/MEM_WB/ALUResult
 add wave -noupdate /MIPS_Processor_TB/DUV/MEM_WB/WriteRegister
 add wave -noupdate /MIPS_Processor_TB/DUV/MEM_WB/ALUResult_Out
 add wave -noupdate /MIPS_Processor_TB/DUV/MEM_WB/WriteRegister_Out
-=======
->>>>>>> alondra
 add wave -noupdate -divider Registers
 add wave -noupdate -label ra -radix hexadecimal /MIPS_Processor_TB/DUV/RegisterFile/Register_ra/DataOutput
-add wave -noupdate -label t0 -radix unsigned /MIPS_Processor_TB/DUV/RegisterFile/Register_t0/DataOutput
-add wave -noupdate -label t1 -radix unsigned /MIPS_Processor_TB/DUV/RegisterFile/Register_t1/DataOutput
-add wave -noupdate -label t2 -radix unsigned /MIPS_Processor_TB/DUV/RegisterFile/Register_t2/DataOutput
-add wave -noupdate -label t3 /MIPS_Processor_TB/DUV/RegisterFile/Register_t3/DataOutput
-add wave -noupdate -label s0 -radix hexadecimal /MIPS_Processor_TB/DUV/RegisterFile/Register_s0/DataOutput
+add wave -noupdate -label t0 -radix hexadecimal /MIPS_Processor_TB/DUV/RegisterFile/Register_t0/DataOutput
+add wave -noupdate -label t1 -radix hexadecimal /MIPS_Processor_TB/DUV/RegisterFile/Register_t1/DataOutput
+add wave -noupdate -label t2 -radix hexadecimal /MIPS_Processor_TB/DUV/RegisterFile/Register_t2/DataOutput
+add wave -noupdate -label t3 -radix hexadecimal /MIPS_Processor_TB/DUV/RegisterFile/Register_t3/DataOutput
+add wave -noupdate -label s0 -radix decimal /MIPS_Processor_TB/DUV/RegisterFile/Register_s0/DataOutput
 add wave -noupdate -label s1 /MIPS_Processor_TB/DUV/RegisterFile/Register_s1/DataOutput
 add wave -noupdate -label s2 /MIPS_Processor_TB/DUV/RegisterFile/Register_s2/DataOutput
 add wave -noupdate -label s3 /MIPS_Processor_TB/DUV/RegisterFile/Register_s3/DataOutput
@@ -172,18 +169,45 @@ add wave -noupdate -label s4 /MIPS_Processor_TB/DUV/RegisterFile/Register_s4/Dat
 add wave -noupdate -label s5 /MIPS_Processor_TB/DUV/RegisterFile/Register_s5/DataOutput
 add wave -noupdate -label s6 /MIPS_Processor_TB/DUV/RegisterFile/Register_s6/DataOutput
 add wave -noupdate -label s7 /MIPS_Processor_TB/DUV/RegisterFile/Register_s7/DataOutput
+add wave -noupdate -divider Mux3to1A
+add wave -noupdate /MIPS_Processor_TB/DUV/Mux3to1A/Selector
+add wave -noupdate /MIPS_Processor_TB/DUV/Mux3to1A/Data0
+add wave -noupdate /MIPS_Processor_TB/DUV/Mux3to1A/Data1
+add wave -noupdate /MIPS_Processor_TB/DUV/Mux3to1A/Data2
+add wave -noupdate /MIPS_Processor_TB/DUV/Mux3to1A/OUT
+add wave -noupdate -divider Mux3to1B
+add wave -noupdate /MIPS_Processor_TB/DUV/Mux3to1B/Selector
+add wave -noupdate /MIPS_Processor_TB/DUV/Mux3to1B/Data0
+add wave -noupdate /MIPS_Processor_TB/DUV/Mux3to1B/Data1
+add wave -noupdate /MIPS_Processor_TB/DUV/Mux3to1B/Data2
+add wave -noupdate /MIPS_Processor_TB/DUV/Mux3to1B/OUT
+add wave -noupdate -divider {Forward Unit}
+add wave -noupdate /MIPS_Processor_TB/DUV/ForwardUnit/EXMEMRd
+add wave -noupdate /MIPS_Processor_TB/DUV/ForwardUnit/MEMWBRd
+add wave -noupdate /MIPS_Processor_TB/DUV/ForwardUnit/IDEXRt
+add wave -noupdate /MIPS_Processor_TB/DUV/ForwardUnit/IDEXRs
+add wave -noupdate /MIPS_Processor_TB/DUV/ForwardUnit/EXMEM_RW
+add wave -noupdate /MIPS_Processor_TB/DUV/ForwardUnit/MEMWB_RW
+add wave -noupdate /MIPS_Processor_TB/DUV/ForwardUnit/ForwardA
+add wave -noupdate /MIPS_Processor_TB/DUV/ForwardUnit/ForwardB
+add wave -noupdate -divider {Hazard Unit}
+add wave -noupdate /MIPS_Processor_TB/DUV/HazardDU/IDEXMemRead
+add wave -noupdate /MIPS_Processor_TB/DUV/HazardDU/IDEXRt
+add wave -noupdate /MIPS_Processor_TB/DUV/HazardDU/IFIDRs
+add wave -noupdate /MIPS_Processor_TB/DUV/HazardDU/IFIDRt
+add wave -noupdate /MIPS_Processor_TB/DUV/HazardDU/HazardMux
+add wave -noupdate /MIPS_Processor_TB/DUV/HazardDU/IFIDWrite
+add wave -noupdate /MIPS_Processor_TB/DUV/HazardDU/PCWrite
+add wave -noupdate -divider {Mux2to1 ID_EX}
+add wave -noupdate /MIPS_Processor_TB/DUV/MuxControlIDEX/Selector
+add wave -noupdate /MIPS_Processor_TB/DUV/MuxControlIDEX/Data0
+add wave -noupdate /MIPS_Processor_TB/DUV/MuxControlIDEX/Data1
+add wave -noupdate /MIPS_Processor_TB/DUV/MuxControlIDEX/OUT
 TreeUpdate [SetDefaultTree]
-<<<<<<< HEAD
-WaveRestoreCursors {{Cursor 1} {2 ps} 0}
+WaveRestoreCursors {{Cursor 1} {7 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 121
-=======
-WaveRestoreCursors {{Cursor 1} {31 ps} 0}
-quietly wave cursor active 1
-configure wave -namecolwidth 150
-configure wave -valuecolwidth 198
->>>>>>> alondra
 configure wave -justifyvalue left
 configure wave -signalnamewidth 1
 configure wave -snapdistance 10
@@ -196,8 +220,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-<<<<<<< HEAD
 WaveRestoreZoom {0 ps} {37 ps}
-=======
-WaveRestoreZoom {13 ps} {45 ps}
->>>>>>> alondra

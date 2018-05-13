@@ -38,8 +38,10 @@ module ID_EX
 	//Instruction
 	input [4:0]ID_Ins_A,
 	input [4:0]ID_Ins_B,
+	input [4:0]ID_Ins_C,
 	output reg [4:0]EX_Ins_A,
 	output reg [4:0]EX_Ins_B,
+	output reg [4:0]EX_Ins_C,
 	//Jump
 	input [31:0]JumpAddress,
 	output reg [31:0]JumpAddress_Out,
@@ -75,6 +77,7 @@ always@(negedge reset or posedge clk) begin
 		//Instruction
 		EX_Ins_A <=  0;
 		EX_Ins_B <=  0;
+		EX_Ins_C <=  0;
 		//JumpAddress
 		JumpAddress_Out <=  0;
 		//shamt
@@ -106,6 +109,7 @@ always@(negedge reset or posedge clk) begin
 		//Instruction
 		EX_Ins_A <= ID_Ins_A;
 		EX_Ins_B <= ID_Ins_B;
+		EX_Ins_C <= ID_Ins_C;
 		//JumpAddress
 		JumpAddress_Out <= JumpAddress;
 		//shamt

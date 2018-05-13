@@ -99,6 +99,7 @@ wire [31:0] w_ReadData2;
 wire [31:0] w_Sign_Out;
 wire [4:0]  w_Ex_Ins_A;
 wire [4:0]  w_Ex_Ins_B;
+wire [4:0]  w_Ex_Ins_C;
 wire [31:0] w_MuxJump;
 wire [4:0]  w_shamt;
 wire			w_Branch_Out2;
@@ -118,6 +119,15 @@ wire [31:0] w_RAM_WB;
 wire [31:0] w_ALUResult_WB;
 wire [5:0]  w_WriteReg_Out;
 wire [31:0] w_ReadData2_Out;
+wire			w_Hazard_PCWrite;
+wire [31:0] w_NewPC;
+wire			w_IFID_enable;
+wire			w_HazardMux;
+wire [15:0] w_Control;
+wire [1:0]  w_Mux3to1A;
+wire [1:0]  w_Mux3to1B;
+wire [31:0] w_A_OUT;
+wire [31:0] w_B_OUT;
 
 
 
@@ -133,7 +143,7 @@ ProgramCounter
 	//Input
 	.clk(clk),
 	.reset(reset),
-	.NewPC(w_MuxJR),
+	.NewPC(w_NewPC),
 	//Output
 	.PCValue(w_PC_ROM)
 );
@@ -239,10 +249,10 @@ MuxALU
 (
 	//Input
 	.Selector(w_ALUSrc_Out),
-	.Data0(w_ReadData2_Out),
+	.Data0(w_B),
 	.Data1(w_Sign_Out),
 	//Output
-	.OUT(w_B)
+	.OUT(w_B_OUT)
 );
 
 Adder32bits
@@ -269,8 +279,8 @@ ALU
 ALU
 (
 	//Input
-	.A(w_A),
-	.B(w_B),
+	.A(w_A_OUT),
+	.B(w_B_OUT),
 	.C(w_PC_ROM_Out2),		//PCValue, used for JAL
 	.ALUOperation(w_ALUControl),
 	.shamt(w_shamt),	//PIPE Change
@@ -371,7 +381,7 @@ IF_ID
 	//Input
 	.clk(clk),
 	.reset(reset),
-	.enable(1), //enable NOT
+	.enable(w_IFID_enable), //enable NOT
 	
 	.Instruction_In(w_ROM_Out),
 	.PC_4_In(w_Add_4),
@@ -391,16 +401,16 @@ ID_EX
 	.enable(1), //enable NOT
 	
 	//Control
-	.RegDst(w_RegDst),
-	.Branch(w_Branch),
-	.MemRead(w_MemRead),
-	.MemtoReg(w_MemtoReg),
-	.MemWrite(w_MemWrite),
-	.ALUSrc(w_ALUSrc),
-	.RegWrite(w_RegWrite),
-	.Jump(w_Jump),
-	.Jal(w_JAL),
-	.ALUOp(w_ALU_Op),
+	.RegDst(w_Control[1]),
+	.Branch(w_Control[7]),
+	.MemRead(w_Control[6]),
+	.MemtoReg(w_Control[5]),
+	.MemWrite(w_Control[4]),
+	.ALUSrc(w_Control[3]),
+	.RegWrite(w_Control[2]),
+	.Jump(w_Control[8]),
+	.Jal(w_Control[0]),
+	.ALUOp(w_Control[15:10]),
 	//Add 4
 	.Add_4(w_Add_4_Out),
 	//Register File
@@ -409,6 +419,7 @@ ID_EX
 	//Sign Extend
 	.SignExtendOutput(w_Sign),
 	//Instruction
+	.ID_Ins_C(w_Ins_Out[25:21]),
 	.ID_Ins_A(w_Ins_Out[20:16]),
 	.ID_Ins_B(w_Ins_Out[15:11]),
 	//JumpAddress
@@ -438,6 +449,7 @@ ID_EX
 	//Sign Extend
 	.SignExtendOutput_Out(w_Sign_Out),
 	//Instruction
+	.EX_Ins_C(w_Ex_Ins_C),
 	.EX_Ins_A(w_Ex_Ins_A),
 	.EX_Ins_B(w_Ex_Ins_B),
 	//JumpAddress
@@ -514,6 +526,89 @@ MEM_WB
 	//EX_MEM
 	.ALUResult_Out(w_ALUResult_WB),
 	.WriteRegister_Out(w_WriteReg_Out)
+);
+
+///***Hazard Detection Unit***///
+HazardDetect
+HazardDU
+(
+	//Input
+		.IDEXMemRead({w_Branch_Out, w_MemRead_Out, w_MemWrite_Out}),
+		.IDEXRt(w_Ex_Ins_A),
+		.IFIDRs(w_Ins_Out[25:21]),
+		.IFIDRt(w_Ins_Out[20:16]),			
+		
+	//Output
+		.HazardMux(w_HazardMux), 
+		.IFIDWrite(w_IFID_enable), //**modificar para la entrada del pipe
+		.PCWrite(w_Hazard_PCWrite)  //va a controlar en pc
+ 
+);
+
+Multiplexer2to1
+MuxHazardPC
+(
+	//Input
+	.Selector(w_Hazard_PCWrite),
+	.Data0(w_MuxJR),
+	.Data1(0),
+	//Output
+	.OUT(w_NewPC)
+);
+
+Multiplexer2to1
+MuxControlIDEX
+(
+	//Input
+	.Selector(w_HazardMux),
+	.Data0({16'b0, w_ALU_Op, w_Jump, w_Branch, w_MemRead, w_MemtoReg, w_MemtoReg, w_MemWrite, w_ALUSrc, w_RegWrite, w_RegDst, w_JAL}),
+	.Data1(0),
+	//Output
+	.OUT(w_Control)
+);
+
+///***Forward Unit***///
+//////////////////ADD THE FORWARD UNIT////////////////
+ForwardUnit
+ForwardUnit
+(
+		//input
+		 .IDEXRt(w_Ex_Ins_A),
+		 .IDEXRs(w_Ex_Ins_C),
+		 .EXMEMRd(w_WriteReg),
+		 .EXMEM_RW({w_MemtoReg_Out2, w_RegWrite_Out2}),
+		 .MEMWBRd(w_WriteReg_Out),
+		 .MEMWB_RW({w_MemtoReg_Out3, w_RegWrite_Out3}), 
+		 
+		//Output
+		 .ForwardA(w_Mux3to1A), 
+		 .ForwardB(w_Mux3to1B) 
+		
+);
+
+///***Mux 3 to 1***///
+Multiplexer3to1
+Mux3to1A
+(
+	//input
+	.Selector(w_Mux3to1A),
+	.Data0(w_A),
+	.Data1(w_WriteData),		//This might be swapped with Data0
+	.Data2(w_ALUResult_Out),
+	//output
+	.OUT(w_A_OUT)
+);
+
+Multiplexer3to1
+Mux3to1B
+(
+	//input
+	.Selector(w_Mux3to1B),
+	.Data0(w_ReadData2_Out),
+	.Data1(w_WriteData),
+	.Data2(w_ALUResult_Out),
+	//output
+	.OUT(w_B)
 );
 
 
