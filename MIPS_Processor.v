@@ -143,7 +143,8 @@ ProgramCounter
 	//Input
 	.clk(clk),
 	.reset(reset),
-	.NewPC(w_NewPC),
+	.Hazard_flag(w_Hazard_PCWrite),
+	.NewPC(/*w_NewPC*/w_MuxJR),
 	//Output
 	.PCValue(w_PC_ROM)
 );
@@ -332,7 +333,7 @@ RAM
 (
 	//Input
 	.clk(clk),
-	.MemWrite(w_MemWrite_Out2),
+	.MemWrite(w_MemWrite_Out), // Changed to receive the flag earlier, it may rollback
 	.Address(w_ALUResult_Out),
 	.WriteData(w_Reg_MuxALU),
 	.MemRead(w_MemRead_Out2),
@@ -544,7 +545,7 @@ HazardDU
 		.PCWrite(w_Hazard_PCWrite)  //va a controlar en pc
  
 );
-
+/*
 Multiplexer2to1
 MuxHazardPC
 (
@@ -555,7 +556,7 @@ MuxHazardPC
 	//Output
 	.OUT(w_NewPC)
 );
-
+*/
 Multiplexer2to1
 MuxControlIDEX
 (
@@ -592,8 +593,8 @@ Mux3to1A
 (
 	//input
 	.Selector(w_Mux3to1A),
-	.Data0(w_A),
-	.Data1(w_WriteData),		//This might be swapped with Data0
+	.Data0(w_WriteData),
+	.Data1(w_A),		//This might be swapped with Data0 - SWAPPED
 	.Data2(w_ALUResult_Out),
 	//output
 	.OUT(w_A_OUT)

@@ -49,15 +49,15 @@ always@( EXMEMRd or IDEXRt or MEMWBRd or IDEXRs or EXMEM_RW or MEMWB_RW )
 		ForwardB <= 0;
 		if (EXMEM_RW && (EXMEMRd != 0) && (EXMEMRd == IDEXRs)) 
 		 begin 
-			ForwardB <= 2'b10;
+			ForwardA <= 2'b10;
 		 end
 		if (EXMEM_RW && (EXMEMRd != 0) && (EXMEMRd == IDEXRt)) 
 		 begin 
-			ForwardA <= 2'b10;
+			ForwardB <= 2'b10;
 		 end
 		if (MEMWB_RW && (MEMWBRd != 0) && (EXMEMRd != IDEXRs) && (MEMWBRd == IDEXRs)) 
 		 begin 
-			ForwardB <= 2'b01;
+			ForwardA <= 2'b01;
 		 end
 		if (MEMWB_RW && (MEMWBRd != 0) && (EXMEMRd != IDEXRt) && (MEMWBRd == IDEXRt)) 
 		 begin 

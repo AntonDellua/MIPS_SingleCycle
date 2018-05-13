@@ -20,7 +20,7 @@ add wave -noupdate /MIPS_Processor_TB/DUV/ALUControl/ALUControlValues
 add wave -noupdate /MIPS_Processor_TB/DUV/ALUControl/Selector
 add wave -noupdate /MIPS_Processor_TB/DUV/ALUControl/JrFlag
 add wave -noupdate -divider Control
-add wave -noupdate /MIPS_Processor_TB/DUV/ControlUnit/OP
+add wave -noupdate -radix binary /MIPS_Processor_TB/DUV/ControlUnit/OP
 add wave -noupdate /MIPS_Processor_TB/DUV/ControlUnit/RegDst
 add wave -noupdate /MIPS_Processor_TB/DUV/ControlUnit/Branch
 add wave -noupdate /MIPS_Processor_TB/DUV/ControlUnit/MemRead
@@ -30,7 +30,7 @@ add wave -noupdate /MIPS_Processor_TB/DUV/ControlUnit/ALUSrc
 add wave -noupdate /MIPS_Processor_TB/DUV/ControlUnit/RegWrite
 add wave -noupdate /MIPS_Processor_TB/DUV/ControlUnit/Jump
 add wave -noupdate /MIPS_Processor_TB/DUV/ControlUnit/Jal
-add wave -noupdate /MIPS_Processor_TB/DUV/ControlUnit/ALUOp
+add wave -noupdate -radix binary /MIPS_Processor_TB/DUV/ControlUnit/ALUOp
 add wave -noupdate -radix binary /MIPS_Processor_TB/DUV/ControlUnit/ControlValues
 add wave -noupdate -divider PC
 add wave -noupdate -radix hexadecimal /MIPS_Processor_TB/DUV/ProgramCounter/NewPC
@@ -88,7 +88,7 @@ add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/ALUSrc
 add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/RegWrite
 add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/Jump
 add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/Jal
-add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/ALUOp
+add wave -noupdate -radix binary /MIPS_Processor_TB/DUV/ID_EX/ALUOp
 add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/RegDst_Out
 add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/Branch_Out
 add wave -noupdate /MIPS_Processor_TB/DUV/ID_EX/MemRead_Out
@@ -168,7 +168,7 @@ add wave -noupdate -label s3 /MIPS_Processor_TB/DUV/RegisterFile/Register_s3/Dat
 add wave -noupdate -label s4 /MIPS_Processor_TB/DUV/RegisterFile/Register_s4/DataOutput
 add wave -noupdate -label s5 /MIPS_Processor_TB/DUV/RegisterFile/Register_s5/DataOutput
 add wave -noupdate -label s6 /MIPS_Processor_TB/DUV/RegisterFile/Register_s6/DataOutput
-add wave -noupdate -label s7 /MIPS_Processor_TB/DUV/RegisterFile/Register_s7/DataOutput
+add wave -noupdate -label s7 -radix decimal /MIPS_Processor_TB/DUV/RegisterFile/Register_s7/DataOutput
 add wave -noupdate -divider Mux3to1A
 add wave -noupdate /MIPS_Processor_TB/DUV/Mux3to1A/Selector
 add wave -noupdate /MIPS_Processor_TB/DUV/Mux3to1A/Data0
@@ -202,12 +202,17 @@ add wave -noupdate -divider {Mux2to1 ID_EX}
 add wave -noupdate /MIPS_Processor_TB/DUV/MuxControlIDEX/Selector
 add wave -noupdate /MIPS_Processor_TB/DUV/MuxControlIDEX/Data0
 add wave -noupdate /MIPS_Processor_TB/DUV/MuxControlIDEX/Data1
-add wave -noupdate /MIPS_Processor_TB/DUV/MuxControlIDEX/OUT
+add wave -noupdate -radix binary /MIPS_Processor_TB/DUV/MuxControlIDEX/OUT
+add wave -noupdate -divider {Mux2to1 Hazard_PC}
+add wave -noupdate /MIPS_Processor_TB/DUV/MuxHazardPC/Selector
+add wave -noupdate /MIPS_Processor_TB/DUV/MuxHazardPC/Data0
+add wave -noupdate /MIPS_Processor_TB/DUV/MuxHazardPC/Data1
+add wave -noupdate /MIPS_Processor_TB/DUV/MuxHazardPC/OUT
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {7 ps} 0}
+WaveRestoreCursors {{Cursor 1} {32 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
-configure wave -valuecolwidth 121
+configure wave -valuecolwidth 199
 configure wave -justifyvalue left
 configure wave -signalnamewidth 1
 configure wave -snapdistance 10
@@ -220,4 +225,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {0 ps} {37 ps}
+WaveRestoreZoom {15 ps} {47 ps}

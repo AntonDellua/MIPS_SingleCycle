@@ -11,7 +11,7 @@
 * Date:
 *	01/03/2014
 ******************************************************************/
-
+/*
 module PC_Register
 #(
 	parameter N=32
@@ -30,6 +30,29 @@ always@(negedge reset or posedge clk) begin
 		PCValue <= 32'h0040_0000;
 	else	
 		PCValue<=NewPC;
+end
+
+endmodule*/
+
+module PC_Register
+#(
+	parameter N=32
+)
+(
+	input clk,
+	input reset,
+	input Hazard_flag,
+	input  [N-1:0] NewPC,
+	output reg [N-1:0] PCValue
+);
+always@(negedge reset or posedge clk) begin
+	if(reset==0)
+		PCValue <= 32'h0040_0000;
+	else
+		if(Hazard_flag==1)
+			PCValue<=PCValue;
+		else
+			PCValue<=NewPC;
 end
 
 endmodule
