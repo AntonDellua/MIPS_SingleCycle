@@ -333,7 +333,7 @@ RAM
 (
 	//Input
 	.clk(clk),
-	.MemWrite(w_MemWrite_Out), // Changed to receive the flag earlier, it may rollback
+	.MemWrite(w_MemWrite_Out2), // Changed to receive the flag earlier, it may rollback - ROLLEDBACK
 	.Address(w_ALUResult_Out),
 	.WriteData(w_Reg_MuxALU),
 	.MemRead(w_MemRead_Out2),

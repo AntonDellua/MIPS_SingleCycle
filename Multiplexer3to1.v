@@ -14,7 +14,7 @@ module Multiplexer3to1
 )
 
 (
-	input Selector,
+	input [1:0] Selector,
 	input [NBits-1:0] Data0,
 	input [NBits-1:0] Data1,
 	input [NBits-1:0] Data2,
