@@ -12,8 +12,8 @@ module ForwardUnit
 		input  [4:0]IDEXRt,
 		input  [4:0]IDEXRs,	
 		
-		input  [1:0] EXMEM_RW,			// viene de wb del exmem
-		input  [1:0] MEMWB_RW,        // viene de wb del write back
+		input  /*[1:0]*/ EXMEM_RW,			// viene de wb del exmem
+		input  /*[1:0]*/ MEMWB_RW,        // viene de wb del write back
 		
 		
 		output reg [1:0] ForwardA, //salidas de control

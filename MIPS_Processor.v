@@ -123,7 +123,7 @@ wire			w_Hazard_PCWrite;
 wire [31:0] w_NewPC;
 wire			w_IFID_enable;
 wire			w_HazardMux;
-wire [15:0] w_Control;
+wire [14:0] w_Control;
 wire [1:0]  w_Mux3to1A;
 wire [1:0]  w_Mux3to1B;
 wire [31:0] w_A_OUT;
@@ -333,9 +333,10 @@ RAM
 (
 	//Input
 	.clk(clk),
-	.MemWrite(w_MemWrite_Out2), // Changed to receive the flag earlier, it may rollback - ROLLEDBACK
+	.MemWrite(w_MemWrite_Out), // Changed to receive the flag earlier, it may rollback
 	.Address(w_ALUResult_Out),
-	.WriteData(w_Reg_MuxALU),
+	//.WriteData(w_Reg_MuxALU), //oRIGINAL
+	.WriteData(w_WriteData),
 	.MemRead(w_MemRead_Out2),
 	//Output
 	.ReadData(w_RAM_WB)
@@ -411,7 +412,7 @@ ID_EX
 	.RegWrite(w_Control[2]),
 	.Jump(w_Control[8]),
 	.Jal(w_Control[0]),
-	.ALUOp(w_Control[15:10]),
+	.ALUOp(w_Control[14:9]),
 	//Add 4
 	.Add_4(w_Add_4_Out),
 	//Register File
@@ -562,7 +563,7 @@ MuxControlIDEX
 (
 	//Input
 	.Selector(w_HazardMux),
-	.Data0({16'b0, w_ALU_Op, w_Jump, w_Branch, w_MemRead, w_MemtoReg, w_MemtoReg, w_MemWrite, w_ALUSrc, w_RegWrite, w_RegDst, w_JAL}),
+	.Data0({17'b0, w_ALU_Op, w_Jump, w_Branch, w_MemRead, w_MemtoReg, w_MemWrite, w_ALUSrc, w_RegWrite, w_RegDst, w_JAL}),
 	.Data1(0),
 	//Output
 	.OUT(w_Control)
@@ -577,9 +578,9 @@ ForwardUnit
 		 .IDEXRt(w_Ex_Ins_A),
 		 .IDEXRs(w_Ex_Ins_C),
 		 .EXMEMRd(w_WriteReg),
-		 .EXMEM_RW({w_MemtoReg_Out2, w_RegWrite_Out2}),
+		 .EXMEM_RW({/*w_MemtoReg_Out2, */w_RegWrite_Out2}),
 		 .MEMWBRd(w_WriteReg_Out),
-		 .MEMWB_RW({w_MemtoReg_Out3, w_RegWrite_Out3}), 
+		 .MEMWB_RW({/*w_MemtoReg_Out3, */w_RegWrite_Out3}), 
 		 
 		//Output
 		 .ForwardA(w_Mux3to1A), 
@@ -593,8 +594,8 @@ Mux3to1A
 (
 	//input
 	.Selector(w_Mux3to1A),
-	.Data0(w_WriteData),
-	.Data1(w_A),		//This might be swapped with Data0 - SWAPPED
+	.Data0(w_A),
+	.Data1(w_WriteData),		//This might be swapped with Data0
 	.Data2(w_ALUResult_Out),
 	//output
 	.OUT(w_A_OUT)
@@ -606,7 +607,7 @@ Mux3to1B
 	//input
 	.Selector(w_Mux3to1B),
 	.Data0(w_ReadData2_Out),
-	.Data1(w_WriteData),
+	.Data1(w_WriteData), 
 	.Data2(w_ALUResult_Out),
 	//output
 	.OUT(w_B)
